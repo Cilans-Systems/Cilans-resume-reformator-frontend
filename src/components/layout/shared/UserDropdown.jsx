@@ -6,7 +6,7 @@ import { useRef, useState } from 'react'
 // Next Imports
 import { useRouter } from 'next/navigation'
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // MUI Imports
 import Avatar from '@mui/material/Avatar'
@@ -21,8 +21,8 @@ import Popper from '@mui/material/Popper'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 
-import { selectUser, setUser } from '@/redux/rootSlice'
-import { SettingIcon, SettingUserEdit } from '@/svgIcons/SvgIcons'
+import { setUser } from '@/redux/rootSlice'
+import { SettingUserEdit } from '@/svgIcons/SvgIcons'
 
 // Styled component for badge content
 const BadgeContentSpan = styled('span')({
@@ -34,13 +34,21 @@ const BadgeContentSpan = styled('span')({
   boxShadow: '0 0 0 2px var(--mui-palette-background-paper)'
 })
 
+const user = {
+  firstName: 'Resume',
+  lastName: 'Reformator',
+  email: 'resume.reformator@gmail.com',
+  phoneNumber: '9876543210'
+}
+
 const UserDropdown = () => {
   // States
   const [open, setOpen] = useState(false)
 
   // Refs
   const anchorRef = useRef(null)
-  const user = useSelector(selectUser)
+
+  // const user = useSelector(selectUser)
 
   // Hooks
   const router = useRouter()
@@ -92,13 +100,13 @@ const UserDropdown = () => {
     }
   }
 
-  const UserNameAvatar = user ? user.givenName + ' ' + user.surname : ''
+  const UserNameAvatar = user ? user.firstName + ' ' + user.lastName : ''
 
   return (
     <>
       <Avatar
         ref={anchorRef}
-        alt={user && user.givenName}
+        alt={user && user.firstName}
         src='' // image source
         onClick={handleDropdownOpen}
         {...stringAvatar(UserNameAvatar)}

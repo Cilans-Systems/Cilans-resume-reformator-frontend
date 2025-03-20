@@ -1,7 +1,8 @@
 'use client'
+import { useState } from 'react'
 
 import { useMsal } from '@azure/msal-react'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Grid, TextField, Typography } from '@mui/material'
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 
@@ -11,6 +12,8 @@ import { setUser } from '@/redux/rootSlice'
 const Login = () => {
   const dispatch = useDispatch()
   const { instance, accounts } = useMsal()
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleLogin = () => {
     instance
@@ -25,13 +28,6 @@ const Login = () => {
       .catch(error => {
         console.error('Login failed: ', error)
       })
-
-    //  const UserDetails = {
-    //    firstName: 'Meet',
-    //    lastName: 'Panchal',
-    //    phone: '9876543210',
-    //    email: 'panchalmeet432@gmail.com'
-    //  }
 
     //  dispatch(setUser(UserDetails))
     //  await router.push('/')
@@ -57,31 +53,16 @@ const Login = () => {
   //   })
   // }
 
-  const GetUserData = async MRes => {
+  const userdata = {
+    firstName: 'Resume',
+    lastName: 'Reformator',
+    email: 'resume.reformator@gmail.com',
+    phoneNumber: '9876543210'
+  }
 
-    if (!instance || !MRes.account) {
-      console.error('MSAL is not initialized or user is not logged in')
-
-      return
-    }
-
+  const GetUserData = () => {
     try {
-      const request = {
-        scopes: ['user.read'],
-        account: MRes.account
-      }
-
-      const response = await instance.acquireTokenSilent(request)
-
-      const res = await fetch(process.env.NEXT_PUBLIC_GET_MSAL, {
-        headers: {
-          Authorization: `Bearer ${response.accessToken}`
-        }
-      })
-
-      const data = await res.json()
-
-      dispatch(setUser(data))
+      dispatch(setUser(userdata))
     } catch (error) {
       console.error('Error acquiring token silently: ', error)
     }
@@ -133,10 +114,40 @@ const Login = () => {
             Login
           </Typography>
           <Typography variant='h6'>Login with your Microsoft Account</Typography>
-          <Button variant='contained' onClick={handleLogin} className='flex gap-3' sx={{ border: '1px solid' }}>
-            <img src='/images/logos/MicrosoftLogo.svg' alt='KyraHome' className='w-[20px]' />
-            Microsoft
-          </Button>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                value={name}
+                placeholder='Enter Email'
+                onChange={e => {
+                  setName(e.target.value)
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                value={password}
+                type='password'
+                placeholder='Password'
+                onChange={e => {
+                  setPassword(e.target.value)
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                fullWidth
+                variant='contained'
+                onClick={GetUserData}
+                className='flex gap-3'
+                sx={{ border: '1px solid', color: 'white', background: '#27307D !important' }}
+              >
+                Login
+              </Button>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
     </Box>

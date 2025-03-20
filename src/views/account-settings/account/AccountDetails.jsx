@@ -1,10 +1,9 @@
 'use client'
 
 // React Imports
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // MUI Imports
-import { useSelector } from 'react-redux'
 
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
@@ -12,8 +11,6 @@ import TextField from '@mui/material/TextField'
 import { Avatar, Box } from '@mui/material'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-
-import { selectUser } from '@/redux/rootSlice'
 
 // Vars
 const initialData = {
@@ -23,27 +20,32 @@ const initialData = {
   phoneNumber: ''
 }
 
+const user = {
+  firstName: 'Resume',
+  lastName: 'Reformator',
+  email: 'resume.reformator@gmail.com',
+  phoneNumber: '9876543210'
+}
+
 const AccountDetails = () => {
   // States
-  const [formData, setFormData] = useState(initialData)
+  const [formData, setFormData] = useState(user)
   const [imgSrc, setImgSrc] = useState('/images/avatars/1.png')
-
-  const user = useSelector(selectUser)
 
   const handleFormChange = (field, value) => {
     setFormData({ ...formData, [field]: value })
   }
 
-  useEffect(() => {
-    if (user) {
-      setFormData({
-        firstName: user.givenName ?? '',
-        lastName: user.surname ?? '',
-        email: user.mail ?? '',
-        phoneNumber: user.mobilePhone ?? ''
-      })
-    }
-  }, [user])
+  // useEffect(() => {
+  //   if (user) {
+  //     setFormData({
+  //       firstName: user.givenName ?? '',
+  //       lastName: user.surname ?? '',
+  //       email: user.mail ?? '',
+  //       phoneNumber: user.mobilePhone ?? ''
+  //     })
+  //   }
+  // }, [user])
 
   const customStyles = {
     inputFields: {
@@ -57,37 +59,36 @@ const AccountDetails = () => {
   }
 
   function stringToColor(string) {
-  let hash = 0
-  let i
+    let hash = 0
+    let i
 
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash)
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash)
+    }
+
+    let color = '#'
+
+    for (i = 0; i < 3; i += 1) {
+      const value = (hash >> (i * 8)) & 0xff
+
+      color += `00${value.toString(16)}`.slice(-2)
+    }
+    /* eslint-enable no-bitwise */
+
+    return color
   }
 
-  let color = '#'
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff
-
-    color += `00${value.toString(16)}`.slice(-2)
+  function stringAvatar(name) {
+    return {
+      sx: {
+        bgcolor: stringToColor(name)
+      },
+      children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`
+    }
   }
-  /* eslint-enable no-bitwise */
 
-  return color
-}
-
-function stringAvatar(name) {
-  return {
-    sx: {
-      bgcolor: stringToColor(name)
-    },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`
-  }
-}
-
-const UserNameAvatar = user ? user.givenName + ' ' + user.surname : '' 
-
+  const UserNameAvatar = user ? user.firstName + ' ' + user.lastName : ''
 
   return (
     <Card>
@@ -98,12 +99,12 @@ const UserNameAvatar = user ? user.givenName + ' ' + user.surname : ''
               <div className='flex flex-col items-center gap-6'>
                 <Avatar
                   alt={user && user.givenName}
-                  src={""} // image source
+                  src={''} // image source
                   height={150}
                   width={150}
                   {...stringAvatar(UserNameAvatar)}
                   className='bs-[150px] is-[150px] uppercase rounded'
-                  sx={{fontSize:'35px', fontWeight:'bold'}}
+                  sx={{ fontSize: '35px', fontWeight: 'bold' }}
                 />
               </div>
             </Box>

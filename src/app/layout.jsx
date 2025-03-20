@@ -13,9 +13,9 @@ import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 
 export const metadata = {
-  title: 'Kyra Solutions',
+  title: 'Resume Reformator',
   description:
-    'Develop next-level web apps with Kyra Solutions Free - NextJS. Now, updated with lightning-fast routing powered by MUI and App router.'
+    'Resume Reformator.'
 }
 
 const RootLayout = ({ children }) => {

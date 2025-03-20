@@ -21,13 +21,13 @@ const NavbarContent = () => {
         <NavToggle />
         <Typography
           sx={{
-            fontSize: { xs: '16px !important', sm: '20px !important' , md:'24px !important' },
+            fontSize: { xs: '16px !important', sm: '20px !important', md: '24px !important' },
             mr: 2,
             fontWeight: '700 !important',
             color: 'rgba(32, 19, 109, 1)'
           }}
         >
-          Welcome to Kyra Solution
+          Welcome To Resume Reformator!
         </Typography>
       </div>
       <div className='flex items-center gap-3'>
